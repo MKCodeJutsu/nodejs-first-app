@@ -1,15 +1,20 @@
 {
   "name": "node-js-level-1",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "app.js",
+"scripts": {
+  "start": "node app.js",
+  "watch": "nodemon --ext *"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.19.2"
+    "connect-livereload": "^0.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "livereload": "^0.9.3",
+    "mongoose": "^8.5.1"
   }
 }
