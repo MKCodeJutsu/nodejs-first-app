@@ -6,7 +6,7 @@
       rel="stylesheet"
       href="./bootstrap-icons-1.10.5/font/bootstrap-icons.min.css"
     />
-    <link rel="shortcut icon" href="./img/ali.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/public/img/muhammed.jpg" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
@@ -58,14 +58,15 @@
                 <td><%= item.gender %>	</td>
                 <td><%= item.country %></td>
                 <td><%= item.age %></td>
-                <td>1 days ago              </td>
+                <td><%= moment(item.updatedAt).format("LLLL");
+ %>              </td>
                 <td>
                   <a
                     data-bs-toggle="tooltip"
                     data-bs-title="View details"
                     data-bs-placement="top"
                     class="btn btn-primary btn-sm"
-                    href="./user/view.html"
+                    href="/view/<%= item._id %>"
                     ><i class="bi bi-eye"></i
                   ></a>
   
@@ -74,18 +75,20 @@
                     data-bs-title="Edit user"
                     data-bs-placement="top"
                     class="btn btn-primary btn-sm"
-                    href="./user/edit.html"
+                    href="/edit/<%= item._id %>"
                   >
                     <i class="bi bi-pencil"></i>
                   </a>
-                  <button
-                    data-bs-toggle="tooltip"
-                    data-bs-title="Delete user"
-                    data-bs-placement="top"
-                    class="btn btn-danger btn-sm"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
+                  <form style="display: inline-block;" action="/edit/<%= item._id %>?_method=DELETE" method="post">
+                    <button
+                      data-bs-toggle="tooltip"
+                      data-bs-title="Delete user"
+                      data-bs-placement="top"
+                      class="btn btn-danger btn-sm"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form action="/">
                 </td>
                 </tr>
             <% }) %>

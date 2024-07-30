@@ -6,6 +6,9 @@ const Customer = require("./models/customerSchema");
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+var moment = require("moment");
+var methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 
 //Auto Refresh
 const path = require("path");
@@ -25,30 +28,42 @@ liveReloadServer.server.once("connection", () => {
 // Pages Rendering Get Request
 
 app.get("/", (req, res) => {
+  console.log("--------------------------------");
   Customer.find()
     .then((result) => {
-      res.render("index", { customers: result });
+      res.render("index", { customers: result, moment: moment });
     })
     .catch((err) => {
       console.log(err);
     });
-  
 });
 
 app.get("/user/add.html", (req, res) => {
   res.render("user/add");
 });
 
-app.get("/user/edit.html", (req, res) => {
-  res.render("user/edit");
+app.get("/edit/:id", (req, res, result) => {
+  Customer.findById(req.params.id)
+    .then((result) => {
+      res.render("user/edit", { sel: result});
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/user/search.html", (req, res) => {
   res.render("user/search");
 });
 
-app.get("/user/view.html", (req, res) => {
-  res.render("user/view");
+app.get("/view/:id", (req, res) => {
+  Customer.findById(req.params.id)
+    .then((result) => {
+      res.render("user/view", { obj: result, moment: moment });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 //POST Request
@@ -64,6 +79,34 @@ app.post("/user/add.html", (req, res) => {
       console.log(err);
     });
 });
+
+// Delete Request
+
+app.delete("/edit/:id", (req, res) => {
+  Customer.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+// Update Request
+
+app.put("/edit/:id", (req, res) => {
+  Customer.findByIdAndUpdate(req.params.id)
+    .then(() => {
+      res.redirect("/");
+  }).catch((err) => { 
+     console.log(err);
+   })
+});
+
+
+
+
+
 
 // MongoDB Connection Database
 mongoose
