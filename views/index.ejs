@@ -34,7 +34,13 @@
       <section class="w-100">
         <%- include('./comp/navbar.ejs') %>
 
-        <table
+        <% if (customers.length === 0) { %>
+          <h2 style="text-align: center; margin-top: 4rem;">No records found.</h2>
+         
+        <% } %>
+
+        <% if (customers.length > 0) { %>
+          <table
           style="width: 99%"
           class="text-center mx-auto table mt-5 table-striped table-bordered"
         >
@@ -95,6 +101,9 @@
 
           </tbody>
         </table>
+        <% } %>
+
+
       </section>
     </main>
     <script src="./js/bootstrap.bundle.min.js"></script>

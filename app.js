@@ -22,7 +22,7 @@ app.use(connectLivereload());
 liveReloadServer.server.once("connection", () => {
   setTimeout(() => {
     liveReloadServer.refresh("/");
-  }, 100);
+  }, 30);
 });
 
 // Pages Rendering Get Request
@@ -45,7 +45,7 @@ app.get("/user/add.html", (req, res) => {
 app.get("/edit/:id", (req, res, result) => {
   Customer.findById(req.params.id)
     .then((result) => {
-      res.render("user/edit", { sel: result});
+      res.render("user/edit", { sel: result });
     })
     .catch((err) => {
       console.log(err);
@@ -69,9 +69,7 @@ app.get("/view/:id", (req, res) => {
 //POST Request
 
 app.post("/user/add.html", (req, res) => {
-  const customer = new Customer(req.body);
-  customer
-    .save()
+  Customer.create(req.body)
     .then(() => {
       res.redirect("/");
     })
@@ -95,18 +93,15 @@ app.delete("/edit/:id", (req, res) => {
 // Update Request
 
 app.put("/edit/:id", (req, res) => {
-  Customer.findByIdAndUpdate(req.params.id)
-    .then(() => {
-      res.redirect("/");
-  }).catch((err) => { 
-     console.log(err);
-   })
+  Customer.updateOne({_id: req.params.id}, req.body)
+  .then((result) => {
+    console.log(result)
+    res.redirect("/");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 });
-
-
-
-
-
 
 // MongoDB Connection Database
 mongoose
