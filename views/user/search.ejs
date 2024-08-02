@@ -29,69 +29,7 @@
     <%- include('../comp/darkmode.ejs') %>
 
     <main class="d-flex flex-nowrap">
-      <div
-      id="sidebarId"
-      class="position-relative d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar"
-    >
-      <span style="right: 10px; top: 2px" class="position-absolute">
-        <button class="btn" onclick="toggleSidebar()">
-          <i class="bi bi-x-circle"></i>
-        </button>
-      </span>
-
-      <a
-        href="/"
-        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
-      >
-        <i class="bi bi-lightning-charge"></i>
-        <span class="fs-4 sidebar-text">Sidebar</span>
-      </a>
-      <hr />
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-          <a href="/" class="nav-link text-white" aria-current="page">
-            <svg class="bi pe-none me-2" width="16" height="16">
-              <use xlink:href="#home" />
-            </svg>
-            <span class="sidebar-text"> Home </span>
-          </a>
-        </li>
-
-        <li>
-          <a href="./user/add.html" class="nav-link text-white">
-            <svg class="bi pe-none me-2" width="16" height="16">
-              <use xlink:href="#people-circle" />
-            </svg>
-            <span class="sidebar-text"> Add Customers </span>
-          </a>
-        </li>
-      </ul>
-      <hr />
-      <div class="dropdown">
-        <a
-          href="#"
-          class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <img
-            src="./img/me.JPG"
-            alt=""
-            width="32"
-            height="32"
-            class="rounded-circle me-2"
-          />
-          <strong class="sidebar-text">Ali Hassan</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
-        </ul>
-      </div>
-      <%- include('../comp/sidebar.ejs', {currentPage:"search"}) %>
+      <%- include('../comp/sidebar.ejs', {currentPage: "search"}) %>
 
 
       <section class="w-100">
@@ -112,41 +50,45 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>test1</td>
-              <td>test2</td>
-              <td>@test3</td>
-
-              <td>
-                <a
-                  data-bs-toggle="tooltip"
-                  data-bs-title="View details"
-                  data-bs-placement="top"
-                  class="btn btn-primary btn-sm"
-                  href="./user/view.html"
-                  ><i class="bi bi-eye"></i
-                ></a>
-
-                <a
-                  data-bs-toggle="tooltip"
-                  data-bs-title="Edit user"
-                  data-bs-placement="top"
-                  class="btn btn-primary btn-sm"
-                  href="./user/edit.html"
-                >
-                  <i class="bi bi-pencil"></i>
-                </a>
-                <button
-                  data-bs-toggle="tooltip"
-                  data-bs-title="Delete user"
-                  data-bs-placement="top"
-                  class="btn btn-danger btn-sm"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
+            <% put.forEach((item,index) => { %>
+              <tr>
+                <th scope="row"><%= index+1 %></th>
+                <td><%= item.firstName %> <%= item.lastName%></td>
+                <td><%= item.gender%></td>
+                <td><%= item.country %></td>
+  
+                <td>
+                  <a
+                    data-bs-toggle="tooltip"
+                    data-bs-title="View details"
+                    data-bs-placement="top"
+                    class="btn btn-primary btn-sm"
+                    href="./view/<%= item._id %>"
+                    ><i class="bi bi-eye"></i
+                  ></a>
+  
+                  <a
+                    data-bs-toggle="tooltip"
+                    data-bs-title="Edit user"
+                    data-bs-placement="top"
+                    class="btn btn-primary btn-sm"
+                    href="./edit/<%= item._id %>"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <form style="display: inline-block;" action="./edit/<%= item._id %>?_method=DELETE" method="post">
+                    <button
+                      data-bs-toggle="tooltip"
+                      data-bs-title="Delete user"
+                      data-bs-placement="top"
+                      class="btn btn-danger btn-sm"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form action="edit/<%= item._id %>?_method=DELETE"">
+                </td>
+              </tr>
+            <% }) %>
           </tbody>
         </table>
       </section>

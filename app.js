@@ -1,14 +1,15 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
-const Customer = require("./models/customerSchema");
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-var moment = require("moment");
 var methodOverride = require("method-override");
 app.use(methodOverride("_method"));
+const allRoutes = require("./routes/allRoutes");
+const addRoute = require("./routes/addRoute");
+
 
 //Auto Refresh
 const path = require("path");
@@ -25,84 +26,6 @@ liveReloadServer.server.once("connection", () => {
   }, 30);
 });
 
-// Pages Rendering Get Request
-
-app.get("/", (req, res) => {
-  console.log("--------------------------------");
-  Customer.find()
-    .then((result) => {
-      res.render("index", { customers: result, moment: moment });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/user/add.html", (req, res) => {
-  res.render("user/add");
-});
-
-app.get("/edit/:id", (req, res, result) => {
-  Customer.findById(req.params.id)
-    .then((result) => {
-      res.render("user/edit", { sel: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/user/search.html", (req, res) => {
-  res.render("user/search");
-});
-
-app.get("/view/:id", (req, res) => {
-  Customer.findById(req.params.id)
-    .then((result) => {
-      res.render("user/view", { obj: result, moment: moment });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-//POST Request
-
-app.post("/user/add.html", (req, res) => {
-  Customer.create(req.body)
-    .then(() => {
-      res.redirect("/");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-// Delete Request
-
-app.delete("/edit/:id", (req, res) => {
-  Customer.findByIdAndDelete(req.params.id)
-    .then(() => {
-      res.redirect("/");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-// Update Request
-
-app.put("/edit/:id", (req, res) => {
-  Customer.updateOne({_id: req.params.id}, req.body)
-  .then((result) => {
-    console.log(result)
-    res.redirect("/");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-});
-
 // MongoDB Connection Database
 mongoose
   .connect(
@@ -116,3 +39,6 @@ mongoose
   .catch((error) => {
     console.log(err);
   });
+
+app.use(allRoutes);
+app.use("/user/add.html",addRoute);
